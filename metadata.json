@@ -1,0 +1,5 @@
+{
+  "name": "Rank Reaction",
+  "description": "A high-performance reaction time tester that ranks users based on their speed.",
+  "requestFramePermissions": []
+}
