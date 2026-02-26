@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Share2, Trophy, Activity, Zap, Brain, Monitor, AlertTriangle, Timer } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 type GameState = 'idle' | 'waiting' | 'go' | 'result' | 'falseStart';
 
@@ -334,8 +335,9 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-zinc-800 bg-zinc-900 mt-auto">
         <div className="h-2 w-full bg-checkered-racing opacity-80"></div>
-        <div className="max-w-7xl mx-auto px-4 py-8 text-center text-zinc-500 font-mono text-sm">
-          &copy; {new Date().getFullYear()} Rank Reaction. All rights reserved.
+        <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-zinc-500 font-mono text-sm">
+          <div>&copy; {new Date().getFullYear()} Rank Reaction. All rights reserved.</div>
+          <Link to="/privacy" className="hover:text-zinc-300 transition-colors underline underline-offset-4">Privacy Policy</Link>
         </div>
       </footer>
     </div>
