@@ -10,6 +10,13 @@ interface Score {
   date: string;
 }
 
+interface LeaderboardEntry {
+  initials: string;
+  time: number;
+  rank: string;
+  date: string;
+}
+
 function getRank(time: number) {
   if (time < 150) return "Cybernetic 🤖";
   if (time < 190) return "Apex Predator 🐆";
@@ -26,6 +33,10 @@ export default function App() {
   const [history, setHistory] = useState<Score[]>([]);
   const [copied, setCopied] = useState(false);
   
+  const [globalLeaderboard, setGlobalLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [showNameEntry, setShowNameEntry] = useState(false);
+  const [initials, setInitials] = useState('');
+  
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
 
@@ -38,7 +49,35 @@ export default function App() {
         console.error(e);
       }
     }
+    
+    const savedLeaderboard = localStorage.getItem('rankReactionGlobalLeaderboard');
+    if (savedLeaderboard) {
+      try {
+        setGlobalLeaderboard(JSON.parse(savedLeaderboard));
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }, []);
+
+  const submitScore = () => {
+    if (!initials || initials.length !== 3 || !reactionTime) return;
+    
+    const newEntry: LeaderboardEntry = {
+      initials: initials.toUpperCase(),
+      time: reactionTime,
+      rank: getRank(reactionTime),
+      date: new Date().toISOString()
+    };
+    
+    setGlobalLeaderboard(prev => {
+      const newBoard = [...prev, newEntry].sort((a, b) => a.time - b.time).slice(0, 10);
+      localStorage.setItem('rankReactionGlobalLeaderboard', JSON.stringify(newBoard));
+      return newBoard;
+    });
+    
+    setShowNameEntry(false);
+  };
 
   const saveScore = (time: number) => {
     const newScore: Score = {
@@ -69,8 +108,11 @@ export default function App() {
 
   const handleInteraction = useCallback((e?: React.MouseEvent | React.TouchEvent | KeyboardEvent) => {
     if (e && e.type === 'keydown') {
+      if ((e.target as HTMLElement).tagName === 'INPUT') return;
       e.preventDefault();
     }
+    
+    if (showNameEntry) return;
     
     if (gameState === 'idle' || gameState === 'result' || gameState === 'falseStart') {
       handleStart();
@@ -83,8 +125,17 @@ export default function App() {
       setReactionTime(time);
       setGameState('result');
       saveScore(time);
+      
+      setGlobalLeaderboard(prev => {
+        // Only prompt if they score Sharp Civilian or better (< 270ms)
+        if (time < 270 && (prev.length < 10 || time < prev[prev.length - 1].time)) {
+          setShowNameEntry(true);
+          setInitials('');
+        }
+        return prev;
+      });
     }
-  }, [gameState, handleStart]);
+  }, [gameState, handleStart, showNameEntry]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -180,18 +231,56 @@ export default function App() {
               )}
               {gameState === 'result' && reactionTime && (
                 <>
-                  <Timer className="w-12 h-12 mb-4 text-green-500" />
-                  <h2 className="text-6xl font-mono font-bold mb-2">{reactionTime} ms</h2>
-                  <p className="text-3xl font-display font-bold italic text-green-400 mb-8">{getRank(reactionTime)}</p>
-                  <p className="text-zinc-400 font-mono mb-6">Click to try again</p>
-                  <button 
-                    id="copy-btn"
-                    onMouseDown={(e) => { e.stopPropagation(); shareScore(); }}
-                    onTouchStart={(e) => { e.stopPropagation(); shareScore(); }}
-                    className="mt-[15px] px-[20px] py-[10px] cursor-pointer bg-[#333] text-white border border-green-500 font-bold z-10 hover:bg-[#444] transition-colors"
-                  >
-                    {copied ? "COPIED! ✅" : "COPY RESULT 🏁"}
-                  </button>
+                  {showNameEntry ? (
+                    <div className="flex flex-col items-center z-10 bg-zinc-900/90 p-8 rounded-2xl border border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.2)] backdrop-blur-sm">
+                      <h2 className="text-3xl font-display font-black italic text-green-400 mb-2 drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]">NEW HIGH SCORE!</h2>
+                      <p className="text-zinc-300 font-mono mb-6">ENTER YOUR INITIALS:</p>
+                      
+                      <div className="flex gap-4 mb-8">
+                        <input 
+                          type="text" 
+                          maxLength={3}
+                          value={initials}
+                          onChange={(e) => setInitials(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
+                          onMouseDown={(e) => e.stopPropagation()}
+                          onTouchStart={(e) => e.stopPropagation()}
+                          className="w-32 h-20 bg-black border-2 border-green-500 text-center text-5xl font-mono font-bold text-white uppercase outline-none focus:border-green-400 focus:shadow-[0_0_15px_rgba(74,222,128,0.5)] transition-all rounded-lg"
+                          autoFocus
+                          placeholder="AAA"
+                        />
+                      </div>
+                      
+                      <button 
+                        onMouseDown={(e) => { 
+                          e.stopPropagation(); 
+                          if (initials.length === 3) submitScore(); 
+                        }}
+                        onTouchStart={(e) => { 
+                          e.stopPropagation(); 
+                          if (initials.length === 3) submitScore(); 
+                        }}
+                        disabled={initials.length !== 3}
+                        className="px-8 py-3 bg-green-600 hover:bg-green-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white font-display font-black italic tracking-widest rounded-full transition-colors"
+                      >
+                        SUBMIT
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <Timer className="w-12 h-12 mb-4 text-green-500" />
+                      <h2 className="text-6xl font-mono font-bold mb-2">{reactionTime} ms</h2>
+                      <p className="text-3xl font-display font-bold italic text-green-400 mb-8">{getRank(reactionTime)}</p>
+                      <p className="text-zinc-400 font-mono mb-6">Click to try again</p>
+                      <button 
+                        id="copy-btn"
+                        onMouseDown={(e) => { e.stopPropagation(); shareScore(); }}
+                        onTouchStart={(e) => { e.stopPropagation(); shareScore(); }}
+                        className="mt-[15px] px-[20px] py-[10px] cursor-pointer bg-[#333] text-white border border-green-500 font-bold z-10 hover:bg-[#444] transition-colors"
+                      >
+                        {copied ? "COPIED! ✅" : "COPY RESULT 🏁"}
+                      </button>
+                    </>
+                  )}
                 </>
               )}
               {gameState === 'falseStart' && (
@@ -202,6 +291,73 @@ export default function App() {
                   <p className="text-blue-200/70 font-mono mt-8">Click to try again</p>
                 </>
               )}
+            </div>
+          </section>
+
+          {/* Arcade Leaderboard */}
+          <section className="bg-black border-2 border-zinc-800 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.05)] relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
+            
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <Trophy className="w-8 h-8 text-green-500" />
+              <h3 className="text-3xl font-display font-black italic tracking-widest text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">
+                GLOBAL LEADERBOARD
+              </h3>
+              <Trophy className="w-8 h-8 text-green-500" />
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse font-mono">
+                <thead>
+                  <tr className="border-b-2 border-zinc-800 text-zinc-500 text-sm tracking-widest">
+                    <th className="pb-4 pl-4 font-bold">POS</th>
+                    <th className="pb-4 font-bold">PLAYER</th>
+                    <th className="pb-4 font-bold">SCORE</th>
+                    <th className="pb-4 font-bold text-right pr-4">TIER</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {globalLeaderboard.length > 0 ? globalLeaderboard.map((entry, i) => {
+                    let rowClass = "border-b border-zinc-900/50 transition-colors hover:bg-zinc-900/30";
+                    let posClass = "text-zinc-500";
+                    let textClass = "text-zinc-400";
+                    
+                    if (i === 0) {
+                      posClass = "text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]";
+                      textClass = "text-yellow-400 font-bold";
+                    } else if (i === 1) {
+                      posClass = "text-zinc-300 drop-shadow-[0_0_8px_rgba(212,212,216,0.5)]";
+                      textClass = "text-zinc-300 font-bold";
+                    } else if (i === 2) {
+                      posClass = "text-amber-600 drop-shadow-[0_0_8px_rgba(217,119,6,0.5)]";
+                      textClass = "text-amber-600 font-bold";
+                    }
+
+                    return (
+                      <tr key={i} className={rowClass}>
+                        <td className={`py-4 pl-4 text-xl font-black ${posClass}`}>
+                          {i === 0 ? '1ST' : i === 1 ? '2ND' : i === 2 ? '3RD' : `${i + 1}TH`}
+                        </td>
+                        <td className={`py-4 text-2xl tracking-widest ${textClass}`}>
+                          {entry.initials}
+                        </td>
+                        <td className={`py-4 text-xl ${textClass}`}>
+                          {entry.time} <span className="text-sm opacity-50">ms</span>
+                        </td>
+                        <td className={`py-4 text-right pr-4 font-display italic ${textClass}`}>
+                          {entry.rank.split(' ')[0]}
+                        </td>
+                      </tr>
+                    );
+                  }) : (
+                    <tr>
+                      <td colSpan={4} className="py-12 text-center text-zinc-600 tracking-widest">
+                        NO HIGH SCORES YET. BE THE FIRST!
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </section>
 
