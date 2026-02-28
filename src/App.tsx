@@ -294,73 +294,6 @@ export default function App() {
             </div>
           </section>
 
-          {/* Arcade Leaderboard */}
-          <section className="bg-black border-2 border-zinc-800 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.05)] relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
-            
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <Trophy className="w-8 h-8 text-green-500" />
-              <h3 className="text-3xl font-display font-black italic tracking-widest text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">
-                GLOBAL LEADERBOARD
-              </h3>
-              <Trophy className="w-8 h-8 text-green-500" />
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse font-mono">
-                <thead>
-                  <tr className="border-b-2 border-zinc-800 text-zinc-500 text-sm tracking-widest">
-                    <th className="pb-4 pl-4 font-bold">POS</th>
-                    <th className="pb-4 font-bold">PLAYER</th>
-                    <th className="pb-4 font-bold">SCORE</th>
-                    <th className="pb-4 font-bold text-right pr-4">TIER</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {globalLeaderboard.length > 0 ? globalLeaderboard.map((entry, i) => {
-                    let rowClass = "border-b border-zinc-900/50 transition-colors hover:bg-zinc-900/30";
-                    let posClass = "text-zinc-500";
-                    let textClass = "text-zinc-400";
-                    
-                    if (i === 0) {
-                      posClass = "text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]";
-                      textClass = "text-yellow-400 font-bold";
-                    } else if (i === 1) {
-                      posClass = "text-zinc-300 drop-shadow-[0_0_8px_rgba(212,212,216,0.5)]";
-                      textClass = "text-zinc-300 font-bold";
-                    } else if (i === 2) {
-                      posClass = "text-amber-600 drop-shadow-[0_0_8px_rgba(217,119,6,0.5)]";
-                      textClass = "text-amber-600 font-bold";
-                    }
-
-                    return (
-                      <tr key={i} className={rowClass}>
-                        <td className={`py-4 pl-4 text-xl font-black ${posClass}`}>
-                          {i === 0 ? '1ST' : i === 1 ? '2ND' : i === 2 ? '3RD' : `${i + 1}TH`}
-                        </td>
-                        <td className={`py-4 text-2xl tracking-widest ${textClass}`}>
-                          {entry.initials}
-                        </td>
-                        <td className={`py-4 text-xl ${textClass}`}>
-                          {entry.time} <span className="text-sm opacity-50">ms</span>
-                        </td>
-                        <td className={`py-4 text-right pr-4 font-display italic ${textClass}`}>
-                          {entry.rank.split(' ')[0]}
-                        </td>
-                      </tr>
-                    );
-                  }) : (
-                    <tr>
-                      <td colSpan={4} className="py-12 text-center text-zinc-600 tracking-widest">
-                        NO HIGH SCORES YET. BE THE FIRST!
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
           {/* Recent Activity */}
           <section className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-6">
@@ -434,6 +367,73 @@ export default function App() {
                 <span className="font-display italic font-bold text-zinc-400">Dial-Up Speed 📞</span>
                 <span className="font-mono text-sm text-zinc-400">450+ ms</span>
               </div>
+            </div>
+          </section>
+
+          {/* Arcade Leaderboard */}
+          <section className="bg-black border-2 border-zinc-800 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.05)] relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
+            
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <Trophy className="w-8 h-8 text-green-500" />
+              <h3 className="text-3xl font-display font-black italic tracking-widest text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">
+                GLOBAL LEADERBOARD
+              </h3>
+              <Trophy className="w-8 h-8 text-green-500" />
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse font-mono">
+                <thead>
+                  <tr className="border-b-2 border-zinc-800 text-zinc-500 text-sm tracking-widest">
+                    <th className="pb-4 pl-4 font-bold">POS</th>
+                    <th className="pb-4 font-bold">PLAYER</th>
+                    <th className="pb-4 font-bold">SCORE</th>
+                    <th className="pb-4 font-bold text-right pr-4">TIER</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {globalLeaderboard.length > 0 ? globalLeaderboard.map((entry, i) => {
+                    let rowClass = "border-b border-zinc-900/50 transition-colors hover:bg-zinc-900/30";
+                    let posClass = "text-zinc-500";
+                    let textClass = "text-zinc-400";
+                    
+                    if (i === 0) {
+                      posClass = "text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]";
+                      textClass = "text-yellow-400 font-bold";
+                    } else if (i === 1) {
+                      posClass = "text-zinc-300 drop-shadow-[0_0_8px_rgba(212,212,216,0.5)]";
+                      textClass = "text-zinc-300 font-bold";
+                    } else if (i === 2) {
+                      posClass = "text-amber-600 drop-shadow-[0_0_8px_rgba(217,119,6,0.5)]";
+                      textClass = "text-amber-600 font-bold";
+                    }
+
+                    return (
+                      <tr key={i} className={rowClass}>
+                        <td className={`py-4 pl-4 text-xl font-black ${posClass}`}>
+                          {i === 0 ? '1ST' : i === 1 ? '2ND' : i === 2 ? '3RD' : `${i + 1}TH`}
+                        </td>
+                        <td className={`py-4 text-2xl tracking-widest ${textClass}`}>
+                          {entry.initials}
+                        </td>
+                        <td className={`py-4 text-xl ${textClass}`}>
+                          {entry.time} <span className="text-sm opacity-50">ms</span>
+                        </td>
+                        <td className={`py-4 text-right pr-4 font-display italic ${textClass}`}>
+                          {entry.rank.split(' ')[0]}
+                        </td>
+                      </tr>
+                    );
+                  }) : (
+                    <tr>
+                      <td colSpan={4} className="py-12 text-center text-zinc-600 tracking-widest">
+                        NO HIGH SCORES YET. BE THE FIRST!
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </section>
 
