@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-green-500/30 flex flex-col">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-cyan-500/30 flex flex-col">
       {/* Header */}
       <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50">
         <div className="h-2 w-full bg-checkered-racing opacity-80"></div>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <Trophy className="w-6 h-6 text-green-500" />
+            <img src="/logo.png" alt="Rank Reaction Logo" className="w-8 h-8 object-contain" />
             <h1 className="text-2xl font-display font-black italic tracking-tight">
-              RANK <span className="text-green-500">REACTION</span>
+              RANK <span className="text-cyan-400">REACTION</span>
             </h1>
           </Link>
           <Link to="/" className="flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors">
@@ -56,10 +56,10 @@ export default function Privacy() {
               <ul className="list-disc pl-5 space-y-2">
                 <li>Third party vendors, including Google, use cookies to serve ads based on a user's prior visits to your website or other websites.</li>
                 <li>Google's use of advertising cookies enables it and its partners to serve ads to your users based on their visit to your sites and/or other sites on the Internet.</li>
-                <li>Users may opt out of personalized advertising by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">Google Ads Settings</a>.</li>
+                <li>Users may opt out of personalized advertising by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">Google Ads Settings</a>.</li>
               </ul>
               <p className="mt-3">
-                For more information on how Google uses data when you use our partners' sites or apps, please visit: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">How Google uses information from sites or apps that use our services</a>.
+                For more information on how Google uses data when you use our partners' sites or apps, please visit: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">How Google uses information from sites or apps that use our services</a>.
               </p>
             </section>
 

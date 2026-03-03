@@ -166,24 +166,24 @@ export default function App() {
   const getTestAreaClasses = () => {
     switch (gameState) {
       case 'idle': return 'bg-zinc-800 hover:bg-zinc-700 text-white cursor-pointer border-2 border-zinc-700';
-      case 'waiting': return 'bg-red-600 text-white cursor-pointer border-2 border-red-500';
-      case 'go': return 'bg-green-500 text-white cursor-pointer border-2 border-green-400';
+      case 'waiting': return 'bg-orange-500 text-white cursor-pointer border-2 border-orange-400';
+      case 'go': return 'bg-cyan-500 text-white cursor-pointer border-2 border-cyan-400';
       case 'result': return 'bg-zinc-800 hover:bg-zinc-700 text-white cursor-pointer border-2 border-zinc-700';
-      case 'falseStart': return 'bg-blue-600 text-white cursor-pointer border-2 border-blue-500';
+      case 'falseStart': return 'bg-zinc-600 text-white cursor-pointer border-2 border-zinc-500';
       default: return 'bg-zinc-800 text-white';
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-green-500/30 flex flex-col">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-cyan-500/30 flex flex-col">
       {/* Header */}
       <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50">
         <div className="h-2 w-full bg-checkered-racing opacity-80"></div>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Trophy className="w-6 h-6 text-green-500" />
+            <img src="/logo.png" alt="Rank Reaction Logo" className="w-8 h-8 object-contain" />
             <h1 className="text-2xl font-display font-black italic tracking-tight">
-              RANK <span className="text-green-500">REACTION</span>
+              RANK <span className="text-cyan-400">REACTION</span>
             </h1>
           </div>
         </div>
@@ -213,15 +213,15 @@ export default function App() {
                 <>
                   <div className="absolute top-0 left-0 w-full h-6 bg-checkered-racing opacity-10"></div>
                   <div className="absolute bottom-0 left-0 w-full h-6 bg-checkered-racing opacity-10"></div>
-                  <Zap className="w-16 h-16 mb-4 text-zinc-400" />
+                  <Zap className="w-16 h-16 mb-4 text-cyan-400" />
                   <h2 className="text-4xl font-display font-bold italic mb-2">Click to Start</h2>
-                  <p className="text-zinc-400 font-mono">Wait for the green screen</p>
+                  <p className="text-zinc-400 font-mono">Wait for the blue screen</p>
                 </>
               )}
               {gameState === 'waiting' && (
                 <>
-                  <h2 className="text-5xl font-display font-bold italic mb-2">Wait for Green...</h2>
-                  <p className="text-red-200 font-mono text-lg">Do not click yet</p>
+                  <h2 className="text-5xl font-display font-bold italic mb-2">Wait for Blue...</h2>
+                  <p className="text-orange-100 font-mono text-lg">Do not click yet</p>
                 </>
               )}
               {gameState === 'go' && (
@@ -232,8 +232,8 @@ export default function App() {
               {gameState === 'result' && reactionTime && (
                 <>
                   {showNameEntry ? (
-                    <div className="flex flex-col items-center z-10 bg-zinc-900/90 p-8 rounded-2xl border border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.2)] backdrop-blur-sm">
-                      <h2 className="text-3xl font-display font-black italic text-green-400 mb-2 drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]">NEW HIGH SCORE!</h2>
+                    <div className="flex flex-col items-center z-10 bg-zinc-900/90 p-8 rounded-2xl border border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.2)] backdrop-blur-sm">
+                      <h2 className="text-3xl font-display font-black italic text-cyan-400 mb-2 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">NEW HIGH SCORE!</h2>
                       <p className="text-zinc-300 font-mono mb-6">ENTER YOUR INITIALS:</p>
                       
                       <div className="flex gap-4 mb-8">
@@ -244,7 +244,7 @@ export default function App() {
                           onChange={(e) => setInitials(e.target.value.toUpperCase().replace(/[^A-Z]/g, ''))}
                           onMouseDown={(e) => e.stopPropagation()}
                           onTouchStart={(e) => e.stopPropagation()}
-                          className="w-32 h-20 bg-black border-2 border-green-500 text-center text-5xl font-mono font-bold text-white uppercase outline-none focus:border-green-400 focus:shadow-[0_0_15px_rgba(74,222,128,0.5)] transition-all rounded-lg"
+                          className="w-32 h-20 bg-black border-2 border-cyan-500 text-center text-5xl font-mono font-bold text-white uppercase outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all rounded-lg"
                           autoFocus
                           placeholder="AAA"
                         />
@@ -260,22 +260,22 @@ export default function App() {
                           if (initials.length === 3) submitScore(); 
                         }}
                         disabled={initials.length !== 3}
-                        className="px-8 py-3 bg-green-600 hover:bg-green-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white font-display font-black italic tracking-widest rounded-full transition-colors"
+                        className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white font-display font-black italic tracking-widest rounded-full transition-colors"
                       >
                         SUBMIT
                       </button>
                     </div>
                   ) : (
                     <>
-                      <Timer className="w-12 h-12 mb-4 text-green-500" />
+                      <Timer className="w-12 h-12 mb-4 text-cyan-500" />
                       <h2 className="text-6xl font-mono font-bold mb-2">{reactionTime} ms</h2>
-                      <p className="text-3xl font-display font-bold italic text-green-400 mb-8">{getRank(reactionTime)}</p>
+                      <p className="text-3xl font-display font-bold italic text-cyan-400 mb-8">{getRank(reactionTime)}</p>
                       <p className="text-zinc-400 font-mono mb-6">Click to try again</p>
                       <button 
                         id="copy-btn"
                         onMouseDown={(e) => { e.stopPropagation(); shareScore(); }}
                         onTouchStart={(e) => { e.stopPropagation(); shareScore(); }}
-                        className="mt-[15px] px-[20px] py-[10px] cursor-pointer bg-[#333] text-white border border-green-500 font-bold z-10 hover:bg-[#444] transition-colors"
+                        className="mt-[15px] px-[20px] py-[10px] cursor-pointer bg-[#333] text-white border border-cyan-500 font-bold z-10 hover:bg-[#444] transition-colors"
                       >
                         {copied ? "COPIED! ✅" : "COPY RESULT 🏁"}
                       </button>
@@ -285,10 +285,10 @@ export default function App() {
               )}
               {gameState === 'falseStart' && (
                 <>
-                  <AlertTriangle className="w-16 h-16 mb-4 text-blue-200" />
+                  <AlertTriangle className="w-16 h-16 mb-4 text-zinc-400" />
                   <h2 className="text-5xl font-display font-bold italic mb-2">False Start!</h2>
-                  <p className="text-blue-200 font-mono text-lg">You clicked too early.</p>
-                  <p className="text-blue-200/70 font-mono mt-8">Click to try again</p>
+                  <p className="text-zinc-300 font-mono text-lg">You clicked too early.</p>
+                  <p className="text-zinc-400 font-mono mt-8">Click to try again</p>
                 </>
               )}
             </div>
@@ -297,7 +297,7 @@ export default function App() {
           {/* Recent Activity */}
           <section className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-6">
-              <Activity className="w-5 h-5 text-green-500" />
+              <Activity className="w-5 h-5 text-cyan-500" />
               <h3 className="text-xl font-display font-bold italic">Recent Activity</h3>
             </div>
             
@@ -334,7 +334,7 @@ export default function App() {
           {/* Rank Tiers */}
           <section className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-6">
-              <Trophy className="w-5 h-5 text-green-500" />
+              <Trophy className="w-5 h-5 text-cyan-500" />
               <h3 className="text-xl font-display font-bold italic">Rank Tiers</h3>
             </div>
             
@@ -371,15 +371,15 @@ export default function App() {
           </section>
 
           {/* Arcade Leaderboard */}
-          <section className="bg-black border-2 border-zinc-800 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.05)] relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
+          <section className="bg-black border-2 border-zinc-800 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,211,238,0.05)] relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
             
             <div className="flex items-center justify-center gap-3 mb-8">
-              <Trophy className="w-8 h-8 text-green-500" />
-              <h3 className="text-3xl font-display font-black italic tracking-widest text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">
+              <Trophy className="w-8 h-8 text-cyan-500" />
+              <h3 className="text-3xl font-display font-black italic tracking-widest text-cyan-500 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
                 GLOBAL LEADERBOARD
               </h3>
-              <Trophy className="w-8 h-8 text-green-500" />
+              <Trophy className="w-8 h-8 text-cyan-500" />
             </div>
             
             <div className="overflow-x-auto">
@@ -445,7 +445,7 @@ export default function App() {
             
             <div className="grid sm:grid-cols-3 gap-6">
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                <Monitor className="w-6 h-6 text-green-500 mb-3" />
+                <Monitor className="w-6 h-6 text-cyan-500 mb-3" />
                 <h4 className="font-bold mb-2">Hardware Setup</h4>
                 <p className="text-zinc-400 text-sm leading-relaxed">
                   Use a high refresh rate monitor (144Hz+) and a wired gaming mouse to minimize input lag and display latency.
@@ -453,7 +453,7 @@ export default function App() {
               </div>
               
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                <Activity className="w-6 h-6 text-green-500 mb-3" />
+                <Activity className="w-6 h-6 text-cyan-500 mb-3" />
                 <h4 className="font-bold mb-2">Physical Health</h4>
                 <p className="text-zinc-400 text-sm leading-relaxed">
                   Reaction times peak when you are well-rested and hydrated. Lack of sleep can add 50ms+ to your reaction time.
@@ -461,7 +461,7 @@ export default function App() {
               </div>
               
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                <Brain className="w-6 h-6 text-green-500 mb-3" />
+                <Brain className="w-6 h-6 text-cyan-500 mb-3" />
                 <h4 className="font-bold mb-2">Cognitive Drills</h4>
                 <p className="text-zinc-400 text-sm leading-relaxed">
                   Regular practice builds neural pathways. Warm up with aim trainers or rhythm games before competitive matches.

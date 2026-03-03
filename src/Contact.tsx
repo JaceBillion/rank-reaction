@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-green-500/30 flex flex-col">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-cyan-500/30 flex flex-col">
       {/* Header */}
       <header className="border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50">
         <div className="h-2 w-full bg-checkered-racing opacity-80"></div>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <Trophy className="w-6 h-6 text-green-500" />
+            <img src="/logo.png" alt="Rank Reaction Logo" className="w-8 h-8 object-contain" />
             <h1 className="text-2xl font-display font-black italic tracking-tight">
-              RANK <span className="text-green-500">REACTION</span>
+              RANK <span className="text-cyan-400">REACTION</span>
             </h1>
           </Link>
           <Link to="/" className="flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-white transition-colors">
